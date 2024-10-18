@@ -1,0 +1,83 @@
+package com.lpdecastro.authwebapp.service;
+
+import com.lpdecastro.authwebapp.dto.UserDto;
+import com.lpdecastro.authwebapp.entity.RoleEntity;
+import com.lpdecastro.authwebapp.entity.UserEntity;
+import com.lpdecastro.authwebapp.repository.RoleRepository;
+import com.lpdecastro.authwebapp.repository.UserRepository;
+import com.lpdecastro.authwebapp.util.LoginModelMapper;
+import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Service;
+
+import java.sql.Timestamp;
+import java.util.List;
+
+@Service
+@RequiredArgsConstructor
+public class UserServiceImpl implements UserService {
+
+    private final UserRepository userRepository;
+    private final LoginModelMapper loginModelMapper;
+    private final PasswordEncoder passwordEncoder;
+    private final RoleRepository roleRepository;
+
+    @Override
+    public void registerUser(UserDto userDto) {
+        RoleEntity roleEntity = roleRepository.findByName("ROLE_USER");
+        UserEntity userEntity = loginModelMapper.convertDtoToEntity(userDto);
+        userEntity.setPassword(passwordEncoder.encode(userDto.getPassword()));
+        userEntity.setRoles(List.of(roleEntity));
+        userRepository.save(userEntity);
+    }
+
+    @Override
+    public boolean findByEmail(String email) {
+        return userRepository.findByEmail(email) != null;
+    }
+
+    @Override
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        UserEntity userEntity = userRepository.findByEmail(username);
+        if (userEntity == null) {
+            throw new UsernameNotFoundException(username + " not found");
+        }
+        return User.withUsername(userEntity.getEmail()).password(userEntity.getPassword()).build();
+    }
+
+    @Override
+    public void updateResetPasswordToken(String email, String token) {
+        UserEntity userEntity = userRepository.findByEmail(email);
+        userEntity.setResetPasswordToken(token);
+        userEntity.setTokenGeneratedDate(new Timestamp(System.currentTimeMillis()));
+        userRepository.save(userEntity);
+    }
+
+    @Override
+    public boolean validateResetPasswordToken(String token) {
+        UserEntity userEntity = userRepository.findByResetPasswordToken(token);
+        if (userEntity == null) {
+            return false;
+        }
+        long inMinutes = validateResetPasswordExpiryTime(userEntity);
+        // invalidate reset password link after 5min
+        return inMinutes <= 5;
+    }
+
+    @Override
+    public void updateChangePassword(String resetPasswordToken, String password) {
+        UserEntity userEntity = userRepository.findByResetPasswordToken(resetPasswordToken);
+        userEntity.setPassword(passwordEncoder.encode(password));
+        userRepository.save(userEntity);
+    }
+
+    private static long validateResetPasswordExpiryTime(UserEntity userEntity) {
+        Timestamp tokenGeneratedTimestamp = userEntity.getTokenGeneratedDate();
+        Timestamp currentTimestamp = new Timestamp(System.currentTimeMillis());
+        long differenceInMs = currentTimestamp.getTime() - tokenGeneratedTimestamp.getTime();
+        return differenceInMs / 60000;
+    }
+}
