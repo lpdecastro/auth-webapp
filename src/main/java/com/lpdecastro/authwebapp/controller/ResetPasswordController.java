@@ -14,29 +14,29 @@ public class ResetPasswordController {
 
     private final UserService userService;
 
-    @GetMapping("/resetPassword")
-    public String resetPasswordWebPage(@RequestParam String token, Model model) {
+    @GetMapping("/reset-password")
+    public String resetPasswordPage(@RequestParam String token, Model model) {
         // validate the reset password token
         boolean tokenValid = userService.validateResetPasswordToken(token);
         if (tokenValid) {
             // if token is valid, then we display change password page
             model.addAttribute("resetPasswordToken", token);
-            return "changePassword";
+            return "reset-password";
         } else {
             // if token is invalid, then display error message
-            return "message";
+            return "reset-password-link-error";
         }
     }
 
-    @PostMapping("/changePassword")
-    public String changePassword(String resetPasswordToken, String password) {
+    @PostMapping("/reset-password")
+    public String resetPassword(String resetPasswordToken, String password) {
         boolean tokenValid = userService.validateResetPasswordToken(resetPasswordToken);
         if (tokenValid) {
             // token is valid, then update password in database
             userService.updateChangePassword(resetPasswordToken, password);
         } else {
             // token is invalid, then display error message
-            return "message";
+            return "reset-password-link-error";
         }
         return "redirect:login?changePassword=true";
     }

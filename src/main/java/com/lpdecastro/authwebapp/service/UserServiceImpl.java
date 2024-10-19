@@ -14,6 +14,9 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.sql.Timestamp;
+import java.time.Duration;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -30,7 +33,7 @@ public class UserServiceImpl implements UserService {
         RoleEntity roleEntity = roleRepository.findByName("ROLE_USER");
         UserEntity userEntity = loginModelMapper.convertDtoToEntity(userDto);
         userEntity.setPassword(passwordEncoder.encode(userDto.getPassword()));
-        userEntity.setRoles(List.of(roleEntity));
+        userEntity.setRoles(new ArrayList<>(List.of(roleEntity)));
         userRepository.save(userEntity);
     }
 
@@ -71,6 +74,32 @@ public class UserServiceImpl implements UserService {
     public void updateChangePassword(String resetPasswordToken, String password) {
         UserEntity userEntity = userRepository.findByResetPasswordToken(resetPasswordToken);
         userEntity.setPassword(passwordEncoder.encode(password));
+        userRepository.save(userEntity);
+    }
+
+    @Override
+    public void updateEmailVerificationToken(String email, String token) {
+        UserEntity userEntity = userRepository.findByEmail(email);
+        userEntity.setEmailVerificationToken(token);
+        userEntity.setEmailVerificationTokenDate(LocalDateTime.now());
+        userRepository.save(userEntity);
+    }
+
+    @Override
+    public boolean validateEmailVerificationToken(String token) {
+        UserEntity userEntity = userRepository.findByEmailVerificationToken(token);
+        if (userEntity == null) {
+            return false;
+        }
+        LocalDateTime emailVerificationTokenDate = userEntity.getEmailVerificationTokenDate();
+        Duration duration = Duration.between(emailVerificationTokenDate, LocalDateTime.now());
+        return duration.toMinutes() <= 5;
+    }
+
+    @Override
+    public void updateEmailVerifiedDate(String token) {
+        UserEntity userEntity = userRepository.findByEmailVerificationToken(token);
+        userEntity.setEmailVerificationTokenDate(LocalDateTime.now());
         userRepository.save(userEntity);
     }
 

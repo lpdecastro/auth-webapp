@@ -9,4 +9,7 @@ public interface UserService extends UserDetailsService {
     void updateResetPasswordToken(String email, String token);
     boolean validateResetPasswordToken(String token);
     void updateChangePassword(String resetPasswordToken, String password);
+    void updateEmailVerificationToken(String email, String token);
+    boolean validateEmailVerificationToken(String token);
+    void updateEmailVerifiedDate(String token);
 }

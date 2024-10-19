@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Email Verification</title>
+
+    <!-- Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Google Fonts (optional, for nice font) -->
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap" rel="stylesheet">
+
+    <!-- Custom CSS -->
+    <style>
+        body {
+            background-color: #f8f9fa;
+            font-family: 'Roboto', sans-serif;
+        }
+        .verify-container {
+            margin-top: 50px;
+            display: flex;
+            justify-content: center;
+        }
+        .verify-card {
+            width: 100%;
+            max-width: 500px;
+            padding: 40px;
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+        .verify-card h2 {
+            margin-bottom: 20px;
+        }
+        .verify-card p {
+            margin-bottom: 30px;
+            font-size: 1rem;
+            color: #333;
+        }
+        .btn-primary {
+            padding: 10px 20px;
+            width: 100%;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container verify-container">
+    <div class="verify-card">
+        <h2>Email Verification</h2>
+
+        <!-- Success Message -->
+        <div th:if="${successMessage}">
+            <p class="text-success" th:text="${successMessage}"></p>
+            <p>
+                Your email has been successfully verified. You can now log in to your account.
+            </p>
+            <a th:href="@{/login}" class="btn btn-primary">Log In</a>
+        </div>
+
+        <!-- Error Message -->
+        <div th:if="${errorMessage}">
+            <p class="text-danger" th:text="${errorMessage}"></p>
+            <p>
+                Your verification link is invalid or has expired. Please request a new verification email.
+            </p>
+            <a th:href="@{/resend-email-verification}" class="btn btn-primary">Resend Verification Email</a>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

@@ -1,6 +1,6 @@
 package com.lpdecastro.authwebapp.controller;
 
-import com.lpdecastro.authwebapp.service.EmailSenderService;
+import com.lpdecastro.authwebapp.service.EmailService;
 import com.lpdecastro.authwebapp.service.UserService;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
@@ -15,15 +15,15 @@ import org.springframework.web.bind.annotation.PostMapping;
 public class ForgotPasswordController {
 
     private final UserService userService;
-    private final EmailSenderService emailSenderService;
+    private final EmailService emailService;
 
-    @GetMapping("/viewForgotPassword")
-    public String viewForgotPasswordPage() {
-        return "forgotpassword";
+    @GetMapping("/forgot-password")
+    public String forgotPasswordPage() {
+        return "forgot-password";
     }
 
-    @PostMapping("/sendEmail")
-    public String sendEmail(String email, Model model, HttpServletRequest request) {
+    @PostMapping("/forgot-password")
+    public String forgotPassword(String email, Model model, HttpServletRequest request) {
         boolean emailExists = userService.findByEmail(email);
         if (emailExists) {
             // create reset password token
@@ -31,18 +31,18 @@ public class ForgotPasswordController {
 
             String webUrl = request.getRequestURL().toString();
             String link = webUrl.replace(request.getServletPath(), "");
-            String resetPasswordLink = link + "/resetPassword?token=" + token;
+            String resetPasswordLink = link + "/reset-password?token=" + token;
 
             // update reset password token in user table
             userService.updateResetPasswordToken(email, token);
 
             // send an email to user with reset password link
             String emailSubject = "Reset password link";
-            emailSenderService.sendEmail(email, emailSubject, resetPasswordLink);
+            emailService.sendEmail(email, emailSubject, resetPasswordLink);
             model.addAttribute("successMessage", "Reset password link sent to you email successfully.");
         } else {
             model.addAttribute("errorMessage", "Email does not exists");
         }
-        return "forgotpassword";
+        return "forgot-password";
     }
 }

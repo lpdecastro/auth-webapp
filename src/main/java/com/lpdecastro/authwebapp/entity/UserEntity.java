@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.Data;
 
 import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -27,6 +28,12 @@ public class UserEntity {
 
     @Column(nullable = false)
     private String password;
+
+    private LocalDateTime emailVerifiedDate;
+
+    private String emailVerificationToken;
+
+    private LocalDateTime emailVerificationTokenDate;
 
     private String resetPasswordToken;
 

@@ -33,12 +33,12 @@ public class SpringSecurityCustomConfiguration {
         logger.info("--- Spring Security Custom Configuration ---");
         return http.formLogin(Customizer.withDefaults())
                 .authorizeHttpRequests(authorize ->
-                        authorize.requestMatchers("/home").authenticated()
+                        authorize.requestMatchers("/").authenticated()
                                 .anyRequest().permitAll()
                 )
                 .formLogin(login ->
                         login.loginPage("/login")
-                                .defaultSuccessUrl("/home")
+                                .defaultSuccessUrl("/")
                                 .failureUrl("/login?error=true"))
                 .logout(logout ->
                         logout.invalidateHttpSession(true)
