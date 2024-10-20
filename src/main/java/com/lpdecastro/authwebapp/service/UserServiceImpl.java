@@ -99,7 +99,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public void updateEmailVerifiedDate(String token) {
         UserEntity userEntity = userRepository.findByEmailVerificationToken(token);
-        userEntity.setEmailVerificationTokenDate(LocalDateTime.now());
+        userEntity.setEmailVerifiedDate(LocalDateTime.now());
         userRepository.save(userEntity);
     }
 

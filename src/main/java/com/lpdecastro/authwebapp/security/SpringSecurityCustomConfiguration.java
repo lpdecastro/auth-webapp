@@ -1,5 +1,6 @@
 package com.lpdecastro.authwebapp.security;
 
+import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Bean;
@@ -12,16 +13,13 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 @Configuration
+@RequiredArgsConstructor
 public class SpringSecurityCustomConfiguration {
 
     Logger logger = LoggerFactory.getLogger(SpringSecurityCustomConfiguration.class);
 
-//    @Bean
-//    InMemoryUserDetailsManager userDetailsManager() {
-//        UserDetails userDetails1 = User.withUsername("admin").password(passwordEncoder().encode("admin")).build();
-//        UserDetails userDetails2 = User.withUsername("superuser").password(passwordEncoder().encode("superuser")).build();
-//        return new InMemoryUserDetailsManager(userDetails1, userDetails2);
-//    }
+    private final CustomAuthenticationFailureHandler customFailureHandler;
+    private final CustomAuthenticationSuccessHandler customAuthenticationSuccessHandler;
 
     @Bean
     PasswordEncoder passwordEncoder() {
@@ -31,7 +29,8 @@ public class SpringSecurityCustomConfiguration {
     @Bean
     SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         logger.info("--- Spring Security Custom Configuration ---");
-        return http.formLogin(Customizer.withDefaults())
+        return http
+                .formLogin(Customizer.withDefaults())
                 .authorizeHttpRequests(authorize ->
                         authorize.requestMatchers("/").authenticated()
                                 .anyRequest().permitAll()
@@ -39,7 +38,9 @@ public class SpringSecurityCustomConfiguration {
                 .formLogin(login ->
                         login.loginPage("/login")
                                 .defaultSuccessUrl("/")
-                                .failureUrl("/login?error=true"))
+                                .failureHandler(customFailureHandler)
+                                .successHandler(customAuthenticationSuccessHandler) // Add custom success handler
+                )
                 .logout(logout ->
                         logout.invalidateHttpSession(true)
                                 .clearAuthentication(true)
