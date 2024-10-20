@@ -72,7 +72,7 @@
         <form th:action="@{/edit-profile}" method="post">
             <div class="form-group">
                 <label for="firstName">First Name</label>
-                <input type="text" id="firstName" name="firstName" class="form-control" th:value="${user.firstName}">
+                <input type="text" id="firstName" name="firstName" class="form-control" th:value="${user.firstName}" required>
             </div>
             <div class="form-group">
                 <label for="lastName">Last Name</label>
@@ -80,7 +80,7 @@
             </div>
             <div class="form-group">
                 <label for="email">Email Address</label>
-                <input type="email" id="email" name="email" class="form-control" th:value="${user.email}" readonly>
+                <input type="email" id="email" name="email" class="form-control" th:value="${user.email}" required>
             </div>
 
             <!-- CSRF Token -->
