@@ -41,7 +41,7 @@ public class EmailVerificationController {
     @PostMapping("/resend-email-verification")
     public String resendEmailVerification(String email, Model model) {
         // check if email exists
-        boolean isUserExists = userService.findByEmail(email);
+        boolean isUserExists = userService.isEmailExists(email);
         if (isUserExists) {
             // if email exists, send verification link
             // create email verification token

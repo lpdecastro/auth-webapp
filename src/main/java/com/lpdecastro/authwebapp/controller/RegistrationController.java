@@ -26,7 +26,7 @@ public class RegistrationController {
 
     @PostMapping("/register")
     public String register(UserDto user, Model model, HttpServletRequest request) {
-        boolean userExists = userService.findByEmail(user.getEmail());
+        boolean userExists = userService.isEmailExists(user.getEmail());
         if (userExists) {
             model.addAttribute("errorMessage", "This email already exists");
             return "register";

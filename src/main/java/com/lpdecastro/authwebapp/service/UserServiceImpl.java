@@ -38,8 +38,18 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public boolean findByEmail(String email) {
+    public void updateUser(UserEntity userEntity) {
+        userRepository.save(userEntity);
+    }
+
+    @Override
+    public boolean isEmailExists(String email) {
         return userRepository.findByEmail(email) != null;
+    }
+
+    @Override
+    public UserEntity findByEmail(String email) {
+        return userRepository.findByEmail(email);
     }
 
     @Override

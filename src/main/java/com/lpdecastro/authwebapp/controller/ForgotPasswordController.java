@@ -24,7 +24,7 @@ public class ForgotPasswordController {
 
     @PostMapping("/forgot-password")
     public String forgotPassword(String email, Model model, HttpServletRequest request) {
-        boolean emailExists = userService.findByEmail(email);
+        boolean emailExists = userService.isEmailExists(email);
         if (emailExists) {
             // create reset password token
             String token = RandomString.make(25);
