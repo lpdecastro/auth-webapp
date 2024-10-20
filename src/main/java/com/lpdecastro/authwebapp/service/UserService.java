@@ -12,7 +12,7 @@ public interface UserService extends UserDetailsService {
     UserEntity findByEmail(String email);
     void updateResetPasswordToken(String email, String token);
     boolean validateResetPasswordToken(String token);
-    void updateChangePassword(String resetPasswordToken, String password);
+    UserEntity updateChangePassword(String resetPasswordToken, String password);
     void updateEmailVerificationToken(String email, String token);
     boolean validateEmailVerificationToken(String token);
     void updateEmailVerifiedDate(String token);

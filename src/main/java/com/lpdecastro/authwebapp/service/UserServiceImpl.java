@@ -82,11 +82,16 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void updateChangePassword(String resetPasswordToken, String password) {
-        UserEntity userEntity = userRepository.findByResetPasswordToken(resetPasswordToken);
-        userEntity.setPassword(passwordEncoder.encode(password));
-        userRepository.save(userEntity);
+    public UserEntity updateChangePassword(String resetPasswordToken, String newPassword) {
+        UserEntity user = userRepository.findByResetPasswordToken(resetPasswordToken);
+        if (user != null) {
+            user.setPassword(passwordEncoder.encode(newPassword));
+            user.setResetPasswordToken(null); // Clear the reset token
+            userRepository.save(user);
+        }
+        return user;
     }
+
 
     @Override
     public void updateEmailVerificationToken(String email, String token) {
