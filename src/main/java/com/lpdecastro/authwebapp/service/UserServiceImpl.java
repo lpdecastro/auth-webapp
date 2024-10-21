@@ -8,6 +8,8 @@ import com.lpdecastro.authwebapp.repository.RoleRepository;
 import com.lpdecastro.authwebapp.repository.UserRepository;
 import com.lpdecastro.authwebapp.util.LoginModelMapper;
 import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -24,10 +26,14 @@ import java.util.List;
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
 
+    private static final Logger logger = LoggerFactory.getLogger(UserServiceImpl.class);
+
+
     private final UserRepository userRepository;
     private final LoginModelMapper loginModelMapper;
     private final PasswordEncoder passwordEncoder;
     private final RoleRepository roleRepository;
+    private final EmailService emailService;
 
     @Override
     public void registerUser(UserDto userDto) {
