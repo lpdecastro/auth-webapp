@@ -2,6 +2,7 @@ package com.lpdecastro.authwebapp.controller;
 
 import com.lpdecastro.authwebapp.service.EmailService;
 import com.lpdecastro.authwebapp.service.UserService;
+import jakarta.mail.MessagingException;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.internal.bytebuddy.utility.RandomString;
@@ -9,6 +10,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+
+import java.io.IOException;
 
 @Controller
 @RequiredArgsConstructor
@@ -38,7 +41,17 @@ public class ForgotPasswordController {
 
             // send an email to user with reset password link
             String emailSubject = "Reset password link";
-            emailService.sendEmail(email, emailSubject, resetPasswordLink);
+//            emailService.sendEmail(email, emailSubject, resetPasswordLink);
+
+            try {
+                emailService.sendResetPasswordEmail(email, "", resetPasswordLink);
+            } catch (MessagingException | IOException e) {
+                // Log error (optional) and display error message
+                e.printStackTrace();
+                model.addAttribute("errorMessage", "Failed to send email. Please try again.");
+                return "forgot-password";
+            }
+
             model.addAttribute("successMessage", "Reset password link sent to you email successfully.");
         } else {
             model.addAttribute("errorMessage", "Email does not exists");

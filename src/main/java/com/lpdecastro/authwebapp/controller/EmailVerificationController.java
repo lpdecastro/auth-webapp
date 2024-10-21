@@ -2,6 +2,7 @@ package com.lpdecastro.authwebapp.controller;
 
 import com.lpdecastro.authwebapp.service.EmailService;
 import com.lpdecastro.authwebapp.service.UserService;
+import jakarta.mail.MessagingException;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.internal.bytebuddy.utility.RandomString;
 import org.springframework.stereotype.Controller;
@@ -10,6 +11,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
+
+import java.io.IOException;
 
 @Controller
 @RequiredArgsConstructor
@@ -53,7 +56,17 @@ public class EmailVerificationController {
             userService.updateEmailVerificationToken(email, token);
             // send email verification link
             String emailSubject = "Resend Email Verification";
-            emailService.sendEmail(email, emailSubject, emailVerificationLink);
+//            emailService.sendEmail(email, emailSubject, emailVerificationLink);
+
+            try {
+                emailService.sendResendEmailVerification(email, "", emailVerificationLink);
+            } catch (MessagingException | IOException e) {
+                // Log error (optional) and display error message
+                e.printStackTrace();
+                model.addAttribute("errorMessage", "Failed to send email. Please try again.");
+                return "resend-email-verification";
+            }
+
             return "redirect:login?resendVerification=true";
         } else {
             // if email does not exists, display error

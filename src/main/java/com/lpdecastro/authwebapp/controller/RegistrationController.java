@@ -3,6 +3,7 @@ package com.lpdecastro.authwebapp.controller;
 import com.lpdecastro.authwebapp.dto.UserDto;
 import com.lpdecastro.authwebapp.service.EmailService;
 import com.lpdecastro.authwebapp.service.UserService;
+import jakarta.mail.MessagingException;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.internal.bytebuddy.utility.RandomString;
@@ -11,6 +12,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
+
+import java.io.IOException;
 
 @Controller
 @RequiredArgsConstructor
@@ -43,7 +46,16 @@ public class RegistrationController {
         // send email verification link
         String emailSubject = "Registration Confirmation";
         long startTime = System.nanoTime();
-        emailService.sendEmail(user.getEmail(), emailSubject, emailVerificationLink);
+//        emailService.sendEmail(user.getEmail(), emailSubject, emailVerificationLink);
+        // Send registration confirmation email
+        try {
+            emailService.sendRegistrationConfirmationEmail(user.getEmail(), user.getFirstName(), emailVerificationLink);
+        } catch (MessagingException | IOException e) {
+            // Log error (optional) and display error message
+            e.printStackTrace();
+            model.addAttribute("errorMessage", "Failed to send confirmation email. Please try again.");
+            return "register";
+        }
         long endTime = System.nanoTime();
         long timeElapsed = (endTime - startTime) / 1_000_000;
         System.out.println("Execution time for sendEmail: " + timeElapsed + " ms");

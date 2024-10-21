@@ -4,12 +4,15 @@ import com.lpdecastro.authwebapp.dto.ChangePasswordDto;
 import com.lpdecastro.authwebapp.entity.UserEntity;
 import com.lpdecastro.authwebapp.service.EmailService;
 import com.lpdecastro.authwebapp.service.UserService;
+import jakarta.mail.MessagingException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+
+import java.io.IOException;
 
 @Controller
 @RequiredArgsConstructor
@@ -53,7 +56,16 @@ public class ChangePasswordController {
                 "Your Support Team";
 
         // Send the email notification
-        emailService.sendEmail(user.getEmail(), emailSubject, emailMessage);
+//        emailService.sendEmail(user.getEmail(), emailSubject, emailMessage);
+
+        try {
+            emailService.sendPasswordChangedEmail(user.getEmail(), user.getFirstName());
+        } catch (MessagingException | IOException e) {
+            // Log error (optional) and display error message
+            e.printStackTrace();
+            model.addAttribute("errorMessage", "Failed to send confirmation email. Please try again.");
+            return "change-password";
+        }
 
         return "change-password";
     }

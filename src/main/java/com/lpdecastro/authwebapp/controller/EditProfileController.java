@@ -5,6 +5,7 @@ import com.lpdecastro.authwebapp.entity.UserEntity;
 import com.lpdecastro.authwebapp.service.EmailService;
 import com.lpdecastro.authwebapp.service.UserService;
 import com.lpdecastro.authwebapp.util.LoginModelMapper;
+import jakarta.mail.MessagingException;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.internal.bytebuddy.utility.RandomString;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -16,6 +17,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
+
+import java.io.IOException;
 
 @Controller
 @RequiredArgsConstructor
@@ -75,7 +78,16 @@ public class EditProfileController {
             // Send email verification link
             String baseUrl = ServletUriComponentsBuilder.fromCurrentContextPath().build().toUriString();
             String emailVerificationLink = baseUrl + "/verify-email?token=" + token;
-            emailService.sendEmail(userDto.getEmail(), "Verify Your Email", emailVerificationLink);
+//            emailService.sendEmail(userDto.getEmail(), "Verify Your Email", emailVerificationLink);
+
+            try {
+                emailService.sendEmailChangedVerificationEmail(userDto.getEmail(), userDto.getFirstName(), emailVerificationLink);
+            } catch (MessagingException | IOException e) {
+                // Log error (optional) and display error message
+                e.printStackTrace();
+                model.addAttribute("errorMessage", "Failed to send confirmation email. Please try again.");
+                return "edit-profile";
+            }
 
             // Update the Authentication object with the new email (username)
             Authentication newAuth = new UsernamePasswordAuthenticationToken(
