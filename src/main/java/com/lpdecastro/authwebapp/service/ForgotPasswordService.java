@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.io.IOException;
-import java.sql.Timestamp;
+import java.time.LocalDateTime;
 
 @Service
 @RequiredArgsConstructor
@@ -30,7 +30,7 @@ public class ForgotPasswordService {
 
         UserEntity userEntity = userRepository.findByEmail(email);
         userEntity.setResetPasswordToken(token);
-        userEntity.setTokenGeneratedDate(new Timestamp(System.currentTimeMillis()));
+        userEntity.setTokenGeneratedDate(LocalDateTime.now());
 
         userRepository.save(userEntity);
         emailService.sendResetPasswordEmail(email, userEntity.getFirstName(), resetPasswordLink);

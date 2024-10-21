@@ -6,10 +6,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.sql.Timestamp;
 import java.time.Duration;
 import java.time.LocalDateTime;
 
@@ -18,7 +16,6 @@ import java.time.LocalDateTime;
 public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
-    private final PasswordEncoder passwordEncoder;
 
     @Override
     public boolean isEmailExists(String email) {
@@ -32,28 +29,6 @@ public class UserServiceImpl implements UserService {
             throw new UsernameNotFoundException(username + " not found");
         }
         return User.withUsername(userEntity.getEmail()).password(userEntity.getPassword()).build();
-    }
-
-    @Override
-    public boolean validateResetPasswordToken(String token) {
-        UserEntity userEntity = userRepository.findByResetPasswordToken(token);
-        if (userEntity == null) {
-            return false;
-        }
-        long inMinutes = validateResetPasswordExpiryTime(userEntity);
-        // invalidate reset password link after 5min
-        return inMinutes <= 5;
-    }
-
-    @Override
-    public UserEntity updateChangePassword(String resetPasswordToken, String newPassword) {
-        UserEntity user = userRepository.findByResetPasswordToken(resetPasswordToken);
-        if (user != null) {
-            user.setPassword(passwordEncoder.encode(newPassword));
-            user.setResetPasswordToken(null); // Clear the reset token
-            userRepository.save(user);
-        }
-        return user;
     }
 
 
@@ -81,12 +56,5 @@ public class UserServiceImpl implements UserService {
         UserEntity userEntity = userRepository.findByEmailVerificationToken(token);
         userEntity.setEmailVerifiedDate(LocalDateTime.now());
         userRepository.save(userEntity);
-    }
-
-    private static long validateResetPasswordExpiryTime(UserEntity userEntity) {
-        Timestamp tokenGeneratedTimestamp = userEntity.getTokenGeneratedDate();
-        Timestamp currentTimestamp = new Timestamp(System.currentTimeMillis());
-        long differenceInMs = currentTimestamp.getTime() - tokenGeneratedTimestamp.getTime();
-        return differenceInMs / 60000;
     }
 }

@@ -3,7 +3,6 @@ package com.lpdecastro.authwebapp.entity;
 import jakarta.persistence.*;
 import lombok.Data;
 
-import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -37,7 +36,7 @@ public class UserEntity {
 
     private String resetPasswordToken;
 
-    private Timestamp tokenGeneratedDate;
+    private LocalDateTime tokenGeneratedDate;
 
     @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinTable(name = "user_roles",
