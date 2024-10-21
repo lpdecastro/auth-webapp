@@ -41,14 +41,6 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void updateResetPasswordToken(String email, String token) {
-        UserEntity userEntity = userRepository.findByEmail(email);
-        userEntity.setResetPasswordToken(token);
-        userEntity.setTokenGeneratedDate(new Timestamp(System.currentTimeMillis()));
-        userRepository.save(userEntity);
-    }
-
-    @Override
     public boolean validateResetPasswordToken(String token) {
         UserEntity userEntity = userRepository.findByResetPasswordToken(token);
         if (userEntity == null) {

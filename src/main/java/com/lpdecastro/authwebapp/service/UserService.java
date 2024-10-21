@@ -7,7 +7,6 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 public interface UserService extends UserDetailsService {
     boolean isEmailExists(String email);
     UserEntity findByEmail(String email);
-    void updateResetPasswordToken(String email, String token);
     boolean validateResetPasswordToken(String token);
     UserEntity updateChangePassword(String resetPasswordToken, String password);
     void updateEmailVerificationToken(String email, String token);
