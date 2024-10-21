@@ -1,72 +1,34 @@
 package com.lpdecastro.authwebapp.controller;
 
 import com.lpdecastro.authwebapp.dto.ChangePasswordDto;
-import com.lpdecastro.authwebapp.entity.UserEntity;
-import com.lpdecastro.authwebapp.service.EmailService;
-import com.lpdecastro.authwebapp.service.UserService;
-import jakarta.mail.MessagingException;
+import com.lpdecastro.authwebapp.service.ChangePasswordService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 
-import java.io.IOException;
-
 @Controller
 @RequiredArgsConstructor
 public class ChangePasswordController {
 
-    private final UserService userService;
-    private final EmailService emailService;
+    private final ChangePasswordService changePasswordService;
 
     @GetMapping("/change-password")
-    public String showChangePasswordForm(Model model) {
-        model.addAttribute("changePasswordDto", new ChangePasswordDto());
+    public String showChangePasswordPage() {
         return "change-password";
     }
 
     @PostMapping("/change-password")
-    public String changePassword(ChangePasswordDto changePasswordDto,
-                                 Authentication authentication,
-                                 Model model) {
-
-        // Get the currently authenticated user's email (username)
-        String username = authentication.getName();
-
-        // Attempt to change the password
-        boolean success = userService.changePassword(username, changePasswordDto);
-
-        if (!success) {
-            // If the current password is incorrect, return an error message
-            model.addAttribute("errorMessage", "Current password is incorrect.");
-            return "change-password";
-        }
-
-        // If password change was successful, add a success message
-        model.addAttribute("successMessage", "Password changed successfully.");
-
-        // Send an email notification after the password change
-        UserEntity user = userService.findByEmail(username);
-        String emailSubject = "Your password has been changed";
-        String emailMessage = "Dear " + user.getFirstName() + ",\n\n" +
-                "Your password has been successfully updated. If you did not initiate this change, please contact support immediately.\n\n" +
-                "Best regards,\n" +
-                "Your Support Team";
-
-        // Send the email notification
-//        emailService.sendEmail(user.getEmail(), emailSubject, emailMessage);
-
+    public String changePassword(ChangePasswordDto changePasswordDto, Model model) {
         try {
-            emailService.sendPasswordChangedEmail(user.getEmail(), user.getFirstName());
-        } catch (MessagingException | IOException e) {
-            // Log error (optional) and display error message
-            e.printStackTrace();
-            model.addAttribute("errorMessage", "Failed to send confirmation email. Please try again.");
-            return "change-password";
+            changePasswordService.changePassword(changePasswordDto);
+            model.addAttribute("successMessage", "Password changed successfully.");
+        } catch (IllegalArgumentException e) {
+            model.addAttribute("errorMessage", e.getMessage());
+        } catch (Exception e) {
+            model.addAttribute("errorMessage", "Failed to change password. Please try again.");
         }
-
         return "change-password";
     }
 

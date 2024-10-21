@@ -1,6 +1,5 @@
 package com.lpdecastro.authwebapp.service;
 
-import com.lpdecastro.authwebapp.dto.ChangePasswordDto;
 import com.lpdecastro.authwebapp.entity.UserEntity;
 import com.lpdecastro.authwebapp.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -24,11 +23,6 @@ public class UserServiceImpl implements UserService {
     @Override
     public boolean isEmailExists(String email) {
         return userRepository.findByEmail(email) != null;
-    }
-
-    @Override
-    public UserEntity findByEmail(String email) {
-        return userRepository.findByEmail(email);
     }
 
     @Override
@@ -87,24 +81,6 @@ public class UserServiceImpl implements UserService {
         UserEntity userEntity = userRepository.findByEmailVerificationToken(token);
         userEntity.setEmailVerifiedDate(LocalDateTime.now());
         userRepository.save(userEntity);
-    }
-
-    @Override
-    public boolean changePassword(String username, ChangePasswordDto changePasswordDto) {
-        // Find the user by email (or username)
-        UserEntity userEntity = userRepository.findByEmail(username);
-
-        // Check if current password matches
-        if (!passwordEncoder.matches(changePasswordDto.getCurrentPassword(), userEntity.getPassword())) {
-            return false; // Current password is incorrect
-        }
-
-        // Set the new password and encode it
-        userEntity.setPassword(passwordEncoder.encode(changePasswordDto.getNewPassword()));
-
-        // Save the user with the new password
-        userRepository.save(userEntity);
-        return true; // Password changed successfully
     }
 
     private static long validateResetPasswordExpiryTime(UserEntity userEntity) {
