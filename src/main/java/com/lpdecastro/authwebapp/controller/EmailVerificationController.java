@@ -1,37 +1,26 @@
 package com.lpdecastro.authwebapp.controller;
 
-import com.lpdecastro.authwebapp.service.EmailService;
-import com.lpdecastro.authwebapp.service.UserService;
-import jakarta.mail.MessagingException;
+import com.lpdecastro.authwebapp.service.EmailVerificationService;
 import lombok.RequiredArgsConstructor;
-import org.modelmapper.internal.bytebuddy.utility.RandomString;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
-
-import java.io.IOException;
 
 @Controller
 @RequiredArgsConstructor
 public class EmailVerificationController {
-
-    private final UserService userService;
-    private final EmailService emailService;
+    
+    private final EmailVerificationService emailVerificationService;
 
     @GetMapping("/verify-email")
     public String verifyEmail(@RequestParam String token, Model model) {
-        // validate email verification token
-        boolean isTokenValid = userService.validateEmailVerificationToken(token);
-        if (isTokenValid) {
-            // if token is valid, then display success screen
-            userService.updateEmailVerifiedDate(token);
+        try {
+            emailVerificationService.verifyEmail(token);
             model.addAttribute("successMessage", "Email successfully verified!");
-        } else {
-            // if token is invalid, then display error screen
-            model.addAttribute("errorMessage", "Email verification failed!");
+        } catch (IllegalArgumentException e) {
+            model.addAttribute("errorMessage", e.getMessage());
         }
         return "verify-email";
     }
@@ -43,34 +32,13 @@ public class EmailVerificationController {
 
     @PostMapping("/resend-email-verification")
     public String resendEmailVerification(String email, Model model) {
-        // check if email exists
-        boolean isUserExists = userService.isEmailExists(email);
-        if (isUserExists) {
-            // if email exists, send verification link
-            // create email verification token
-            String token = RandomString.make(25);
-            // create email verification link
-            String baseUrl = ServletUriComponentsBuilder.fromCurrentContextPath().build().toUriString();
-            String emailVerificationLink = baseUrl + "/verify-email?token=" + token;
-            // update user's email verification token
-            userService.updateEmailVerificationToken(email, token);
-            // send email verification link
-            String emailSubject = "Resend Email Verification";
-//            emailService.sendEmail(email, emailSubject, emailVerificationLink);
-
-            try {
-                emailService.sendResendEmailVerification(email, "", emailVerificationLink);
-            } catch (MessagingException | IOException e) {
-                // Log error (optional) and display error message
-                e.printStackTrace();
-                model.addAttribute("errorMessage", "Failed to send email. Please try again.");
-                return "resend-email-verification";
-            }
-
+        try {
+            emailVerificationService.resendEmailVerification(email);
             return "redirect:login?resendVerification=true";
-        } else {
-            // if email does not exists, display error
-            model.addAttribute("errorMessage", "User not found!");
+        } catch (IllegalArgumentException e) {
+            model.addAttribute("errorMessage", e.getMessage());
+        } catch (Exception e) {
+            model.addAttribute("errorMessage", "Failed to send email. Please try again.");
         }
         return "resend-email-verification";
     }
