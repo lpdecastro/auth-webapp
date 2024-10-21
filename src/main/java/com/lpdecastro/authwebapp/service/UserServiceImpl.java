@@ -1,15 +1,9 @@
 package com.lpdecastro.authwebapp.service;
 
 import com.lpdecastro.authwebapp.dto.ChangePasswordDto;
-import com.lpdecastro.authwebapp.dto.UserDto;
-import com.lpdecastro.authwebapp.entity.RoleEntity;
 import com.lpdecastro.authwebapp.entity.UserEntity;
-import com.lpdecastro.authwebapp.repository.RoleRepository;
 import com.lpdecastro.authwebapp.repository.UserRepository;
-import com.lpdecastro.authwebapp.util.LoginModelMapper;
 import lombok.RequiredArgsConstructor;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -19,35 +13,13 @@ import org.springframework.stereotype.Service;
 import java.sql.Timestamp;
 import java.time.Duration;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
 
 @Service
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
 
-    private static final Logger logger = LoggerFactory.getLogger(UserServiceImpl.class);
-
-
     private final UserRepository userRepository;
-    private final LoginModelMapper loginModelMapper;
     private final PasswordEncoder passwordEncoder;
-    private final RoleRepository roleRepository;
-    private final EmailService emailService;
-
-    @Override
-    public void registerUser(UserDto userDto) {
-        RoleEntity roleEntity = roleRepository.findByName("ROLE_USER");
-        UserEntity userEntity = loginModelMapper.convertDtoToEntity(userDto);
-        userEntity.setPassword(passwordEncoder.encode(userDto.getPassword()));
-        userEntity.setRoles(new ArrayList<>(List.of(roleEntity)));
-        userRepository.save(userEntity);
-    }
-
-    @Override
-    public void updateUser(UserEntity userEntity) {
-        userRepository.save(userEntity);
-    }
 
     @Override
     public boolean isEmailExists(String email) {
