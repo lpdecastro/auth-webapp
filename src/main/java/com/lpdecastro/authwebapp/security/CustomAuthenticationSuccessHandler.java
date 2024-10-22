@@ -20,14 +20,15 @@ public class CustomAuthenticationSuccessHandler implements AuthenticationSuccess
 
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response,
-                                        Authentication authentication) throws IOException, ServletException {
+                                        Authentication authentication) throws IOException {
 
         String username = authentication.getName();
         UserEntity userEntity = userRepository.findByEmail(username);
 
         // Check if email is verified after successful login
         if (userEntity.getEmailVerifiedDate() == null) {
-            response.sendRedirect("/login?emailUnverified=true");
+            request.getSession().setAttribute("emailUnverified", "true");
+            response.sendRedirect("/login");
         } else {
             // If email is verified, continue with the default success behavior
             response.sendRedirect("/");

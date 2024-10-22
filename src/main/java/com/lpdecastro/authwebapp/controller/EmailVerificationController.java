@@ -7,11 +7,12 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
 @RequiredArgsConstructor
 public class EmailVerificationController {
-    
+
     private final EmailVerificationService emailVerificationService;
 
     @GetMapping("/verify-email")
@@ -31,10 +32,11 @@ public class EmailVerificationController {
     }
 
     @PostMapping("/resend-email-verification")
-    public String resendEmailVerification(String email, Model model) {
+    public String resendEmailVerification(String email, Model model, RedirectAttributes redirectAttributes) {
         try {
             emailVerificationService.resendEmailVerification(email);
-            return "redirect:login?resendVerification=true";
+            redirectAttributes.addFlashAttribute("successMessage", "You have resent your verification code.");
+            return "redirect:login";
         } catch (IllegalArgumentException e) {
             model.addAttribute("errorMessage", e.getMessage());
         } catch (Exception e) {

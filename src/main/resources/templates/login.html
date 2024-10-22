@@ -81,7 +81,7 @@
             <span th:text="${successMessage}"></span>
         </div>
 
-        <div th:if="${param.emailUnverified}" class="text-danger text-center my-3 resend-link">
+        <div th:if="${emailUnverified}" class="text-danger text-center my-3 resend-link">
             Your email isn’t verified.
             <a th:href="@{/resend-email-verification}" class="text-danger">Resend the verification email</a>.
         </div>

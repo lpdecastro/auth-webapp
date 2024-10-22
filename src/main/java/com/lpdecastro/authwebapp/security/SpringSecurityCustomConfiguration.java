@@ -20,6 +20,7 @@ public class SpringSecurityCustomConfiguration {
 
     private final CustomAuthenticationFailureHandler customFailureHandler;
     private final CustomAuthenticationSuccessHandler customAuthenticationSuccessHandler;
+    private final CustomLogoutSuccessHandler customLogoutSuccessHandler;
 
     @Bean
     PasswordEncoder passwordEncoder() {
@@ -44,8 +45,8 @@ public class SpringSecurityCustomConfiguration {
                 .logout(logout ->
                         logout.invalidateHttpSession(true)
                                 .clearAuthentication(true)
-                                .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
-                                .logoutSuccessUrl("/login?logout=true"))
+                                .logoutSuccessHandler(customLogoutSuccessHandler)
+                                .logoutRequestMatcher(new AntPathRequestMatcher("/logout")))
                 .build();
     }
 }

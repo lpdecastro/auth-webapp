@@ -8,6 +8,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
 @RequiredArgsConstructor
@@ -26,10 +27,11 @@ public class ResetPasswordController {
     }
 
     @PostMapping("/reset-password")
-    public String resetPassword(String token, String password) {
+    public String resetPassword(String token, String password, RedirectAttributes redirectAttributes) {
         try {
             resetPasswordService.resetPassword(token, password);
-            return "redirect:login?changePassword=true";
+            redirectAttributes.addFlashAttribute("successMessage", "You have successfully reset your password.");
+            return "redirect:login";
         } catch (Exception e) {
             return "reset-password-link-error";
         }
