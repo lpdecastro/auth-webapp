@@ -1,6 +1,6 @@
 package com.lpdecastro.authwebapp.security;
 
-import com.lpdecastro.authwebapp.repository.EmailNotVerifiedException;
+import com.lpdecastro.authwebapp.exception.EmailNotVerifiedException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.security.core.AuthenticationException;

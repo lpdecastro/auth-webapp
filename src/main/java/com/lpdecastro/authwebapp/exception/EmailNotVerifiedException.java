@@ -1,4 +1,4 @@
-package com.lpdecastro.authwebapp.repository;
+package com.lpdecastro.authwebapp.exception;
 
 import org.springframework.security.core.AuthenticationException;
 

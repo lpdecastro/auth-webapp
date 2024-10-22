@@ -1,7 +1,7 @@
 package com.lpdecastro.authwebapp.service;
 
 import com.lpdecastro.authwebapp.entity.UserEntity;
-import com.lpdecastro.authwebapp.repository.EmailNotVerifiedException;
+import com.lpdecastro.authwebapp.exception.EmailNotVerifiedException;
 import com.lpdecastro.authwebapp.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.User;
@@ -12,7 +12,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
-public class UserServiceImpl implements UserDetailsService {
+public class UserService implements UserDetailsService {
 
     private final UserRepository userRepository;
 
