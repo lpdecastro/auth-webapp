@@ -1,6 +1,7 @@
 package com.lpdecastro.authwebapp.service;
 
 import com.lpdecastro.authwebapp.entity.UserEntity;
+import com.lpdecastro.authwebapp.repository.EmailNotVerifiedException;
 import com.lpdecastro.authwebapp.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.User;
@@ -20,6 +21,9 @@ public class UserServiceImpl implements UserDetailsService {
         UserEntity user = userRepository.findByEmail(username);
         if (user == null) {
             throw new UsernameNotFoundException(username + " not found");
+        }
+        if (user.getEmailVerifiedDate() == null) {
+            throw new EmailNotVerifiedException("Email not verified");
         }
         return User.withUsername(user.getEmail()).password(user.getPassword()).build();
     }

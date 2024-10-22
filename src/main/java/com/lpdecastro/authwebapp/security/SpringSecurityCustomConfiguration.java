@@ -16,7 +16,6 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 public class SpringSecurityCustomConfiguration {
 
     private final CustomAuthenticationFailureHandler customFailureHandler;
-    private final CustomAuthenticationSuccessHandler customAuthenticationSuccessHandler;
     private final CustomLogoutSuccessHandler customLogoutSuccessHandler;
 
 
@@ -44,7 +43,6 @@ public class SpringSecurityCustomConfiguration {
                         login.loginPage("/login")
                                 .defaultSuccessUrl("/")
                                 .failureHandler(customFailureHandler)
-                                .successHandler(customAuthenticationSuccessHandler)
                 )
                 .logout(logout ->
                         logout.invalidateHttpSession(true)
