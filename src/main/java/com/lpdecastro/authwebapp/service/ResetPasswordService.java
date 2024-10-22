@@ -27,6 +27,7 @@ public class ResetPasswordService {
 
         user.setPassword(passwordEncoder.encode(newPassword));
         user.setResetPasswordToken(null);
+        user.setTokenGeneratedDate(null);
 
         userRepository.save(user);
         emailService.sendPasswordChangedEmail(user.getEmail(), user.getFirstName());

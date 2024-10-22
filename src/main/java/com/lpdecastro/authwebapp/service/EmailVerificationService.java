@@ -25,6 +25,8 @@ public class EmailVerificationService {
             throw new IllegalArgumentException("Email verification link is invalid or expired");
         }
         user.setEmailVerifiedDate(LocalDateTime.now());
+        user.setEmailVerificationToken(null);
+        user.setEmailVerificationTokenDate(null);
         userRepository.save(user);
     }
 
