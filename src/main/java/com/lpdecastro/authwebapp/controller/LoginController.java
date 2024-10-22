@@ -10,21 +10,17 @@ public class LoginController {
 
     @GetMapping("/login")
     public String loginPage(Model model, HttpSession session) {
-        String errorMessage = (String) session.getAttribute("errorMessage");
-        if (errorMessage != null) {
-            model.addAttribute("errorMessage", errorMessage);
-            session.removeAttribute("errorMessage");
-        }
-        String emailUnverified = (String) session.getAttribute("emailUnverified");
-        if (emailUnverified != null) {
-            model.addAttribute("emailUnverified", true);
-            session.removeAttribute("emailUnverified");
-        }
-        String successMessage = (String) session.getAttribute("successMessage");
-        if (successMessage != null) {
-            model.addAttribute("successMessage", successMessage);
-            session.removeAttribute("successMessage");
-        }
+        addSessionAttributeToModel(model, session, "successMessage");
+        addSessionAttributeToModel(model, session, "errorMessage");
+        addSessionAttributeToModel(model, session, "emailUnverified");
         return "login";
+    }
+
+    private void addSessionAttributeToModel(Model model, HttpSession session, String key) {
+        Object attribute = session.getAttribute(key);
+        if (attribute != null) {
+            model.addAttribute(key, attribute);
+            session.removeAttribute(key);
+        }
     }
 }
