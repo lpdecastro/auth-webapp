@@ -1,0 +1,314 @@
+@font-face {
+    font-family: 'Roboto';
+    src: url('../fonts/Roboto-Regular.ttf') format('truetype');
+    font-weight: 400;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Roboto';
+    src: url('../fonts/Roboto-Medium.ttf') format('truetype');
+    font-weight: 500;
+    font-style: normal;
+}
+
+:root {
+    --bs-font-sans-serif: 'Roboto', sans-serif;
+}
+
+html {
+    font-size: 14px;
+}
+
+body {
+    background-color: #f8f9fa;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Navigation Header Styles */
+.navbar {
+    background-color: #ffffff;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+    padding: 15px 30px;
+}
+
+.navbar-brand {
+    font-weight: 500;
+    font-size: 1.2rem;
+}
+
+.nav-link {
+    color: #0056b3;
+    font-size: 1rem;
+    padding: 8px 15px;
+    transition: all 0.3s ease;
+}
+
+/* Hover effect for nav links */
+.nav-link:hover {
+    background-color: #f0f8ff; /* Light background on hover */
+    color: #003d73; /* Darker text on hover */
+    border-radius: 5px; /* Slight rounded corners */
+}
+
+/* Active page indicator for Profile */
+.nav-link.active {
+    font-weight: bold;
+    color: #0056b3;
+    border-bottom: 2px solid #0056b3; /* Bottom border for active state */
+}
+
+/* Improved spacing between navigation links */
+.navbar-nav {
+    margin: 0 auto; /* Centering the links */
+    gap: 30px; /* Increased spacing between links */
+}
+
+/* Logout button with refined color */
+.btn-logout {
+    /*background-color: #ff5c5c; !* Soft red color for logout *!*/
+    background-color: #e74c3c; /* Soft red color for logout */
+    color: #ffffff;
+    border-radius: 8px;
+    padding: 8px 20px;
+    transition: background-color 0.3s ease;
+}
+
+/* Logout button hover effect */
+.btn-logout:hover {
+    /*background-color: #e04a4a; !* Darker red for hover *!*/
+    background-color: #c0392b; /* Darker red for hover */
+    color: #ffffff; /* Keep text white */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Add shadow on hover */
+}
+
+/* Align the logout button to the far right */
+.logout-container {
+    margin-left: auto;
+}
+
+/* Container to prevent edges */
+.container {
+    max-width: 1140px;
+}
+
+.form-container {
+    max-width: 500px;
+    margin: 40px auto;
+    padding: 40px; /* Increased padding */
+    background-color: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/*.change-password-container {*/
+/*    margin-top: 50px;*/
+/*    display: flex;*/
+/*    justify-content: center;*/
+/*}*/
+
+/*.change-password-card {*/
+/*    width: 100%;*/
+/*    max-width: 550px;*/
+/*    padding: 40px;*/
+/*    background-color: #ffffff;*/
+/*    border-radius: 12px;*/
+/*    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);*/
+/*}*/
+
+.form-control {
+    border-radius: 8px;
+    padding: 10px;
+    box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);
+    margin: 0 auto;
+    background-color: #f1f3f5;
+    border: 1px solid #ced4da;
+}
+
+/* Custom styles for the select input to match form-control input */
+.form-select {
+    border-radius: 8px; /* Match the rounded corners */
+    padding: 10px; /* Similar padding to the text inputs */
+    box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1); /* Subtle inner shadow */
+    background-color: #f1f3f5; /* Same background color as other inputs */
+    border: 1px solid #ced4da; /* Match the border styling */
+    color: #495057; /* Text color */
+    appearance: none; /* Remove the default arrow icon */
+}
+
+/* Styling for the select dropdown arrow */
+.form-select:focus {
+    border-color: #0056b3; /* Match focus border color */
+    outline: none; /* Remove default outline */
+    box-shadow: 0 0 0 0.2rem rgba(0, 86, 179, 0.25); /* Add focus shadow */
+}
+
+/* Custom styles for the date input to match form-control input */
+.custom-date {
+    border-radius: 8px; /* Match the rounded corners */
+    padding: 10px; /* Same padding as other inputs */
+    box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1); /* Subtle inner shadow */
+    background-color: #f1f3f5; /* Same background color as other inputs */
+    border: 1px solid #ced4da; /* Match border styling */
+    color: #495057; /* Text color */
+}
+
+/* Focus state to match form control */
+.custom-date:focus {
+    border-color: #0056b3; /* Match focus border color */
+    outline: none; /* Remove default outline */
+    box-shadow: 0 0 0 0.2rem rgba(0, 86, 179, 0.25); /* Add focus shadow */
+}
+
+/* Style the calendar icon for date input */
+.custom-date::-webkit-calendar-picker-indicator {
+    filter: invert(50%); /* Customize calendar icon if desired */
+    opacity: 0.5; /* Make the calendar icon more subtle */
+}
+
+/* Remove spinner arrows for better look (if browser renders them) */
+input[type="date"]::-webkit-inner-spin-button,
+input[type="date"]::-webkit-calendar-picker-indicator {
+    display: block; /* Keep calendar picker indicator visible */
+}
+
+/* Custom styles for the checkboxes */
+.custom-checkbox {
+    border-radius: 4px; /* Slight rounding for a modern look */
+    border: 1px solid #ced4da; /* Match the border color */
+    background-color: #f1f3f5; /* Match the input field background color */
+    width: 20px; /* Adjust size for uniformity */
+    height: 20px; /* Adjust size for uniformity */
+    margin-right: 10px; /* Add space between checkbox and label */
+    cursor: pointer;
+}
+
+/* Focus state to match input fields */
+.custom-checkbox:focus {
+    outline: none; /* Remove default outline */
+    box-shadow: 0 0 0 0.2rem rgba(0, 86, 179, 0.25); /* Blue focus shadow */
+}
+
+/* Styling for the form check labels */
+.form-check-label {
+    font-weight: 500;
+    color: #495057; /* Match label text color */
+}
+
+/* Margin adjustments for the checkbox group */
+.form-check {
+    margin-bottom: 10px; /* Space between checkboxes */
+}
+
+.input-group-text {
+    cursor: pointer;
+    background-color: #f1f3f5;
+    border: none;
+    font-size: 1.2rem;
+    padding: 10px;
+}
+
+.text-center a {
+    color: #6c757d;
+}
+
+/* Notification Alert Style */
+.alert {
+    padding: 12px; /* Reduced padding */
+    border-radius: 8px;
+    font-size: 1rem;
+    display: flex;
+    align-items: center; /* Align content vertically */
+    height: 52px; /* Match button height */
+}
+
+.alert .btn-close {
+    margin-left: auto; /* Push close button to the right */
+}
+
+/* Simplified and minimalistic nav-tabs */
+.nav-tabs {
+    display: flex;
+    justify-content: space-between; /* Spread the tabs evenly */
+    border-bottom: 1px solid #e0e0e0; /* Simple bottom border */
+}
+
+.nav-tabs .nav-link {
+    color: #0056b3;
+    font-size: 1rem;
+    padding: 10px 15px;
+    background: none;
+    border: none;
+    border-bottom: 2px solid transparent;
+    transition: all 0.3s;
+}
+
+.nav-tabs .nav-link.active {
+    color: #0056b3;
+    font-weight: 500;
+    border-bottom: 2px solid #0056b3; /* Simple active tab underline */
+}
+
+.nav-tabs .nav-link:hover {
+    color: #0056b3;
+    border-bottom: 2px solid #d0e6f7; /* Hover effect */
+}
+
+.tab-content {
+    margin-top: 20px;
+}
+
+.btn-primary {
+    background-color: #0056b3;
+    border-color: #0056b3;
+    border-radius: 8px;
+    width: 100%;
+    padding: 12px;
+}
+
+.btn-primary:hover {
+    background-color: #004495;
+    border-color: #004495;
+}
+
+.form-footer {
+    text-align: right;
+    margin-top: 20px;
+}
+
+/* Standard modern layout for labels and input */
+.mb-3 {
+    text-align: left;
+}
+
+.mb-3 label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: 500;
+}
+
+/* Checkbox input style */
+.form-check-input {
+    margin-right: 10px;
+    border-radius: 4px;
+}
+
+/* Main content should take all available space */
+.main-content {
+    flex: 1;
+}
+
+/* Footer Styles */
+.footer {
+    background-color: #f8f9fa;
+    text-align: center;
+    padding: 15px 0;
+    box-shadow: 0 -2px 4px rgba(0, 0, 0, 0.1); /* Subtle shadow for a modern look */
+    font-size: 0.9rem;
+}
+
+.footer span {
+    color: #6c757d;
+}

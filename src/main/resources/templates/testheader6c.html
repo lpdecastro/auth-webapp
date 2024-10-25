@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Navigation Header</title>
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500&display=swap" rel="stylesheet">
+
+    <!-- Bootstrap CSS (v5.3.3) -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom CSS -->
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+        }
+
+        /* Navigation Header Styles */
+        .navbar {
+            background-color: #ffffff;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+            padding: 15px 30px;
+        }
+
+        .navbar-brand {
+            font-weight: 500;
+            font-size: 1.2rem;
+        }
+
+        .nav-link {
+            color: #0056b3;
+            font-size: 1rem;
+            padding: 8px 15px;
+            transition: all 0.3s ease;
+        }
+
+        /* Subtle hover effect for nav links */
+        .nav-link:hover {
+            color: #003d73; /* Subtle color change on hover */
+        }
+
+        /* Active page indicator for Profile */
+        .nav-link.active {
+            font-weight: bold;
+            color: #003d73; /* Darker color for active state */
+        }
+
+        /* Improved spacing between navigation links */
+        .navbar-nav {
+            margin: 0 auto; /* Centering the links */
+            gap: 30px; /* Increased spacing between links */
+        }
+
+        /* Logout button with refined color */
+        .btn-logout {
+            background-color: #ff6f61; /* Muted red color for logout */
+            color: #ffffff;
+            border-radius: 8px;
+            padding: 8px 20px;
+            transition: background-color 0.3s ease;
+        }
+
+        /* Logout button hover effect */
+        .btn-logout:hover {
+            background-color: #e05547; /* Darker red for hover */
+        }
+
+        /* Align the logout button to the far right */
+        .logout-container {
+            margin-left: auto;
+        }
+
+        /* Container to prevent edges */
+        .container {
+            max-width: 1140px;
+        }
+    </style>
+</head>
+<body>
+
+<!-- Navigation Header -->
+<nav class="navbar navbar-expand-lg">
+    <div class="container">
+        <a class="navbar-brand" href="#">MyApp</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav">
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Home</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link active" href="#">Profile</a> <!-- Active page -->
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Change Password</a>
+                </li>
+            </ul>
+
+            <div class="logout-container">
+                <button class="btn btn-logout" type="button">Logout</button>
+            </div>
+        </div>
+    </div>
+</nav>
+
+<!-- Bootstrap JS and dependencies -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+</body>
+</html>

@@ -17,18 +17,21 @@ public class EditProfileController {
 
     @GetMapping("/edit-profile")
     public String showEditProfilePage(Model model) {
-        model.addAttribute("user", editProfileService.getCurrentUser());
-        return "edit-profile";
+        UserDto userDto = editProfileService.getCurrentUser();
+        model.addAttribute("user", userDto);
+//        return "edit-profile-v2";
+        return "edit-profile-v3-using6";
     }
 
     @PostMapping("/edit-profile")
-    public String editProfile(UserDto userDto, RedirectAttributes redirectAttributes) {
+    public String editProfile(UserDto user, RedirectAttributes redirectAttributes) {
         try {
-            editProfileService.editProfile(userDto);
+            editProfileService.editProfile(user);
             redirectAttributes.addFlashAttribute("successMessage", "Profile updated successfully.");
         } catch (IllegalArgumentException e) {
             redirectAttributes.addFlashAttribute("errorMessage", e.getMessage());
         } catch (Exception e) {
+            e.printStackTrace();
             redirectAttributes.addFlashAttribute("errorMessage", "Failed to update profile. Please try again.");
         }
         return "redirect:/edit-profile";

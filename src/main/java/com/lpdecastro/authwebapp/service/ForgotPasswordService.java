@@ -30,7 +30,7 @@ public class ForgotPasswordService {
 
         UserEntity userEntity = userRepository.findByEmail(email);
         userEntity.setResetPasswordToken(token);
-        userEntity.setTokenGeneratedDate(LocalDateTime.now());
+        userEntity.setResetPasswordTokenDate(LocalDateTime.now());
 
         userRepository.save(userEntity);
         emailService.sendResetPasswordEmail(email, userEntity.getFirstName(), resetPasswordLink);

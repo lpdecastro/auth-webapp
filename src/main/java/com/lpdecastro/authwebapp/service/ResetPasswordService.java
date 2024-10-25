@@ -27,7 +27,7 @@ public class ResetPasswordService {
 
         user.setPassword(passwordEncoder.encode(newPassword));
         user.setResetPasswordToken(null);
-        user.setTokenGeneratedDate(null);
+        user.setResetPasswordTokenDate(null);
 
         userRepository.save(user);
         emailService.sendPasswordChangedEmail(user.getEmail(), user.getFirstName());
@@ -39,7 +39,7 @@ public class ResetPasswordService {
             return null;
         }
 
-        Duration tokenAge = Duration.between(user.getTokenGeneratedDate(), LocalDateTime.now());
+        Duration tokenAge = Duration.between(user.getResetPasswordTokenDate(), LocalDateTime.now());
         if (tokenAge.toMinutes() > 5) {
             return null;
         }

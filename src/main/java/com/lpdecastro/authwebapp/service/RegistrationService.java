@@ -1,7 +1,7 @@
 package com.lpdecastro.authwebapp.service;
 
 import com.lpdecastro.authwebapp.dto.UserDto;
-import com.lpdecastro.authwebapp.entity.RoleEntity;
+import com.lpdecastro.authwebapp.entity.Role;
 import com.lpdecastro.authwebapp.entity.UserEntity;
 import com.lpdecastro.authwebapp.repository.RoleRepository;
 import com.lpdecastro.authwebapp.repository.UserRepository;
@@ -15,8 +15,8 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.io.IOException;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 @Service
 @RequiredArgsConstructor
@@ -39,12 +39,12 @@ public class RegistrationService {
         String baseUrl = ServletUriComponentsBuilder.fromCurrentContextPath().build().toUriString();
         String emailVerificationLink = baseUrl + "/verify-email?token=" + token;
 
-        RoleEntity roleEntity = roleRepository.findByName("ROLE_USER");
+        Role role = roleRepository.findByName("ROLE_USER");
 
         userEntity.setPassword(passwordEncoder.encode(userDto.getPassword()));
         userEntity.setEmailVerificationToken(token);
         userEntity.setEmailVerificationTokenDate(LocalDateTime.now());
-        userEntity.setRoles(new ArrayList<>(List.of(roleEntity)));
+        userEntity.setRoles(new HashSet<>(Set.of(role)));
 
         userRepository.save(userEntity);
         emailService.sendRegistrationConfirmationEmail(userDto.getEmail(), userDto.getFirstName(), emailVerificationLink);

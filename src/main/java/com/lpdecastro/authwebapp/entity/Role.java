@@ -2,21 +2,25 @@ package com.lpdecastro.authwebapp.entity;
 
 import jakarta.persistence.*;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Set;
 
 @Entity
 @Table(name = "role")
 @Data
-public class RoleEntity {
+public class Role {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private Long id;
 
+    @Column(unique = true, nullable = false)
     private String name;
 
     @ManyToMany(mappedBy = "roles")
-    private List<UserEntity> users = new ArrayList<>();
+    @ToString.Exclude
+    @EqualsAndHashCode.Exclude
+    private Set<UserEntity> users;
 }

@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Profile</title>
+    <!-- Bootstrap 5.3.3 -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: #f5f7fa;
+        }
+
+        .nav-tabs .nav-link {
+            color: #007bff;
+            border: none;
+        }
+
+        .nav-tabs .nav-link.active {
+            background-color: #007bff;
+            color: #fff;
+            border-radius: 8px;
+        }
+
+        .tab-content {
+            border-radius: 8px;
+            background-color: #fff;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            margin-top: 10px;
+        }
+
+        .form-control {
+            border-radius: 8px;
+            box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);
+        }
+
+        .btn-primary {
+            background-color: #007bff;
+            border: none;
+            border-radius: 8px;
+            padding: 10px 20px;
+        }
+
+        .btn-primary:hover {
+            background-color: #0056b3;
+        }
+
+        .form-label {
+            font-weight: 500;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container mt-5">
+    <h2 class="text-center mb-4">Edit Profile</h2>
+    <ul class="nav nav-tabs justify-content-center" id="profileTabs" role="tablist">
+        <li class="nav-item" role="presentation">
+            <button class="nav-link active" id="personal-tab" data-bs-toggle="tab" data-bs-target="#personal"
+                    type="button" role="tab" aria-controls="personal" aria-selected="true">Personal
+            </button>
+        </li>
+        <li class="nav-item" role="presentation">
+            <button class="nav-link" id="contact-tab" data-bs-toggle="tab" data-bs-target="#contact" type="button"
+                    role="tab" aria-controls="contact" aria-selected="false">Contact
+            </button>
+        </li>
+        <li class="nav-item" role="presentation">
+            <button class="nav-link" id="profession-tab" data-bs-toggle="tab" data-bs-target="#profession" type="button"
+                    role="tab" aria-controls="profession" aria-selected="false">Profession
+            </button>
+        </li>
+        <li class="nav-item" role="presentation">
+            <button class="nav-link" id="subscription-tab" data-bs-toggle="tab" data-bs-target="#subscription"
+                    type="button" role="tab" aria-controls="subscription" aria-selected="false">Subscription
+            </button>
+        </li>
+    </ul>
+
+    <form th:action="@{/profile/edit}" method="post" class="mt-4">
+        <div class="tab-content" id="profileTabContent">
+            <!-- Personal Tab -->
+            <div class="tab-pane fade show active" id="personal" role="tabpanel" aria-labelledby="personal-tab">
+                <div class="mb-3">
+                    <label for="firstName" class="form-label">First Name</label>
+                    <input type="text" class="form-control" id="firstName" name="firstName" th:value="${user.firstName}" placeholder="Enter your first name">
+                </div>
+            </div>
+
+            <!-- Contact Tab -->
+            <div class="tab-pane fade" id="contact" role="tabpanel" aria-labelledby="contact-tab">
+                <div class="mb-3">
+                    <label for="email" class="form-label">Email</label>
+                    <input type="email" class="form-control" id="email" name="email" th:value="${user.email}" placeholder="Enter your email">
+                </div>
+            </div>
+
+            <!-- Profession Tab -->
+            <div class="tab-pane fade" id="profession" role="tabpanel" aria-labelledby="profession-tab">
+                <div class="mb-3">
+                    <label for="jobTitle" class="form-label">Job Title</label>
+                    <input type="text" class="form-control" id="jobTitle" name="jobTitle" th:value="${user.jobTitle}" placeholder="Enter your job title">
+                </div>
+            </div>
+
+            <!-- Subscription Tab -->
+            <div class="tab-pane fade" id="subscription" role="tabpanel" aria-labelledby="subscription-tab">
+                <div class="mb-3">
+                    <label for="newsletter" class="form-label">Subscribe to Newsletter</label>
+                    <input type="checkbox" class="form-check-input" id="newsletter" name="newsletter" th:checked="${user.newsletter}">
+                    <label class="form-check-label" for="newsletter">Yes</label>
+                </div>
+            </div>
+        </div>
+
+        <div class="d-flex justify-content-center mt-4">
+            <button type="submit" class="btn btn-primary">Save Changes</button>
+        </div>
+    </form>
+</div>
+
+<!-- Bootstrap JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+</body>
+</html>

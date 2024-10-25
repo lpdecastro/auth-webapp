@@ -15,7 +15,8 @@ public class ChangePasswordController {
     private final ChangePasswordService changePasswordService;
 
     @GetMapping("/change-password")
-    public String showChangePasswordPage() {
+    public String showChangePasswordPage(Model model) {
+        model.addAttribute("changePasswordDto", new ChangePasswordDto());
         return "change-password";
     }
 

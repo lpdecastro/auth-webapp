@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Profile</title>
+
+    <link rel="stylesheet" type="text/css" th:href="@{/css/bootstrap.min.css}" href="../static/css/bootstrap.min.css"/>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/styles.css}" href="../static/css/styles.css"/>
+</head>
+<body>
+
+<!-- Navigation Header -->
+<nav class="navbar navbar-expand-lg">
+    <div class="container">
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <div class="col-md-3 mb-2 mb-md-0">
+            </div>
+
+            <ul class="navbar-nav">
+                <li class="nav-item">
+                    <a class="nav-link" th:href="@{/}">Home</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link active" th:href="@{/edit-profile}">Profile</a> <!-- Active page -->
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" th:href="@{/change-password}">Change Password</a>
+                </li>
+            </ul>
+
+            <div class="logout-container">
+                <a th:href="@{/logout}" class="btn btn-logout" type="button">Logout</a>
+            </div>
+        </div>
+    </div>
+</nav>
+
+<!-- Main Content -->
+<div class="main-content">
+    <div class="container form-container">
+        <h2 class="text-center mb-4">Edit Profile</h2>
+
+        <!-- Notification Alert (Success or Failure) -->
+        <div th:if="${successMessage}" class="alert alert-success alert-dismissible fade show" role="alert">
+            Your profile has been updated successfully!
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+        <div th:if="${errorMessage}" class="alert alert-danger alert-dismissible fade show" role="alert">
+            Failed to update your profile. Please try again.
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+
+        <!-- Nav tabs -->
+        <ul class="nav nav-tabs" id="profileTabs" role="tablist">
+            <li class="nav-item" role="presentation">
+                <button class="nav-link active" id="personal-tab" data-bs-toggle="tab" data-bs-target="#personal"
+                        type="button" role="tab" aria-controls="personal" aria-selected="true">Personal
+                </button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="contact-tab" data-bs-toggle="tab" data-bs-target="#contact" type="button"
+                        role="tab" aria-controls="contact" aria-selected="false">Contact
+                </button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="profession-tab" data-bs-toggle="tab" data-bs-target="#profession"
+                        type="button"
+                        role="tab" aria-controls="profession" aria-selected="false">Profession
+                </button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="subscription-tab" data-bs-toggle="tab" data-bs-target="#subscription"
+                        type="button" role="tab" aria-controls="subscription" aria-selected="false">Subscription
+                </button>
+            </li>
+        </ul>
+
+        <!-- Tab content -->
+        <div class="tab-content" id="profileTabContent">
+            <!-- Personal Tab -->
+            <div class="tab-pane fade show active" id="personal" role="tabpanel" aria-labelledby="personal-tab">
+                <form th:action="@{/edit-profile}" th:object="${user}" method="post">
+                    <div class="mb-3">
+                        <label for="firstName" class="form-label">First Name</label>
+                        <input type="text" class="form-control" id="firstName" th:field="*{firstName}">
+                    </div>
+                    <div class="mb-3">
+                        <label for="middleName" class="form-label">Middle Name</label>
+                        <input type="text" class="form-control" id="middleName" th:field="*{middleName}">
+                    </div>
+                    <div class="mb-3">
+                        <label for="lastName" class="form-label">Last Name</label>
+                        <input type="text" class="form-control" id="lastName" th:field="*{lastName}">
+                    </div>
+                    <div class="mb-3">
+                        <label for="salutation" class="form-label">Salutation</label>
+                        <input type="text" class="form-control" id="salutation" th:field="*{salutation}">
+                    </div>
+                    <div class="mb-3">
+                        <label for="title" class="form-label">Title</label>
+                        <input type="text" class="form-control" id="title" th:field="*{title}">
+                    </div>
+                    <div class="mb-3">
+                        <label for="gender" class="form-label">Gender</label>
+                        <select class="form-select" id="gender" th:field="*{gender}">
+                            <option value="" disabled selected></option>
+                            <option value="male">Male</option>
+                            <option value="female">Female</option>
+                            <option value="other">Other</option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label for="birthday" class="form-label">Date of Birth</label>
+                        <input type="date" class="form-control custom-date" id="birthday" th:field="*{birthday}">
+                    </div>
+
+                    <!-- CSRF Token -->
+                    <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+
+                    <!-- Form Footer -->
+                    <div class="form-footer mt-4">
+                        <button type="submit" class="btn btn-primary">Save Changes</button>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Contact Tab -->
+            <div class="tab-pane fade" id="contact" role="tabpanel" aria-labelledby="contact-tab">
+                <form th:action="@{/edit-profile}" th:object="${user}" method="post">
+                    <div class="mb-3">
+                        <label for="email" class="form-label">Email Address</label>
+                        <input type="email" class="form-control" id="email" th:field="*{email}">
+                    </div>
+                    <div class="mb-3">
+                        <label for="mobile" class="form-label">Mobile</label>
+                        <input type="text" class="form-control" id="mobile" th:field="*{mobile}">
+                    </div>
+                    <div class="mb-3">
+                        <label for="phone" class="form-label">Phone</label>
+                        <input type="text" class="form-control" id="phone" th:field="*{phone}">
+                    </div>
+                    <div class="mb-3">
+                        <label for="address1" class="form-label">Address Line 1</label>
+                        <input type="text" class="form-control" id="address1" th:field="*{address.address1}">
+                    </div>
+                    <div class="mb-3">
+                        <label for="address2" class="form-label">Address Line 2</label>
+                        <input type="text" class="form-control" id="address2" th:field="*{address.address2}">
+                    </div>
+                    <div class="mb-3">
+                        <label for="city" class="form-label">City</label>
+                        <input type="text" class="form-control" id="city" th:field="*{address.city}">
+                    </div>
+                    <div class="mb-3">
+                        <label for="province" class="form-label">Province</label>
+                        <input type="text" class="form-control" id="province" th:field="*{address.province}">
+                    </div>
+                    <div class="mb-3">
+                        <label for="zip" class="form-label">ZIP Code</label>
+                        <input type="text" class="form-control" id="zip" th:field="*{address.zip}">
+                    </div>
+                    <div class="mb-3">
+                        <label for="country" class="form-label">Country</label>
+                        <input type="text" class="form-control" id="country" th:field="*{address.country}">
+                    </div>
+
+                    <!-- CSRF Token -->
+                    <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+
+                    <!-- Form Footer -->
+                    <div class="form-footer mt-4">
+                        <button type="submit" class="btn btn-primary">Save Changes</button>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Profession Tab -->
+            <div class="tab-pane fade" id="profession" role="tabpanel" aria-labelledby="profession-tab">
+                <form th:action="@{/edit-profile}" th:object="${user}" method="post">
+                    <div id="professional-info-container">
+                        <!-- Loop through existing professional info entries -->
+                        <div th:each="profInfo, stat : ${user.professionalInfos}" class="mb-4">
+                            <div class="professional-item" th:attr="data-index=${stat.index}">
+                                <div class="mb-3">
+                                    <label for="jobTitle" class="form-label">Job Title</label>
+                                    <input type="text" class="form-control" id="jobTitle"
+                                           th:field="*{professionalInfos[__${stat.index}__].title}">
+                                </div>
+                                <div class="mb-3">
+                                    <label for="company" class="form-label">Job Title</label>
+                                    <input type="text" class="form-control" id="company"
+                                           th:field="*{professionalInfos[__${stat.index}__].company}">
+                                </div>
+                                <div class="mb-3">
+                                    <label for="industry" class="form-label">Job Title</label>
+                                    <input type="text" class="form-control" id="industry"
+                                           th:field="*{professionalInfos[__${stat.index}__].industry}">
+                                </div>
+                                <div class="mb-3">
+                                    <label for="yearsOfExperience" class="form-label">Job Title</label>
+                                    <input type="text" class="form-control" id="yearsOfExperience"
+                                           th:field="*{professionalInfos[__${stat.index}__].yearsOfExperience}">
+                                </div>
+                                <button type="button" class="btn btn-danger remove-btn">Remove</button>
+                                <hr>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Button to Add New Professional Info -->
+                    <button type="button" class="btn btn-success d-block mb-3" id="add-professional-info-btn">
+                        Add Professional Info
+                    </button>
+
+                    <!-- CSRF Token -->
+                    <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+                    <input type="hidden" name="professionalInfoTab" value="true">
+
+                    <!-- Form Footer -->
+                    <div class="form-footer mt-4">
+                        <button type="submit" class="btn btn-primary">Save Changes</button>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Subscription Tab -->
+            <div class="tab-pane fade" id="subscription" role="tabpanel" aria-labelledby="subscription-tab">
+                <form th:action="@{/edit-profile}" th:object="${user}" method="post">
+
+                    <!-- Subscriptions -->
+                    <div class="mb-3">
+                        <label class="form-label">Subscriptions</label>
+                        <div class="form-check">
+                            <input class="form-check-input custom-checkbox" type="checkbox" id="newsletterSubscription"
+                                   th:field="*{newsletterSubscription}">
+                            <input type="hidden" name="newsletterSubscription" value="false">
+                            <label class="form-check-label" for="newsletterSubscription">Subscribe to our
+                                Newsletter</label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input custom-checkbox" type="checkbox" id="promoSubscription"
+                                   th:field="*{promoSubscription}">
+                            <input type="hidden" name="promoSubscription" value="false">
+                            <label class="form-check-label" for="promoSubscription">Receive Promotional Offers</label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input custom-checkbox" type="checkbox"
+                                   id="productUpdateSubscription"
+                                   th:field="*{productUpdateSubscription}">
+                            <input type="hidden" name="productUpdateSubscription" value="false">
+                            <label class="form-check-label" for="productUpdateSubscription">Receive Product
+                                Updates</label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input custom-checkbox" type="checkbox"
+                                   id="eventNotificationSubscription"
+                                   th:field="*{eventNotificationSubscription}">
+                            <input type="hidden" name="eventNotificationSubscription" value="false">
+                            <label class="form-check-label" for="eventNotificationSubscription">Get Event
+                                Notifications</label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input custom-checkbox" type="checkbox"
+                                   id="surveySubscription"
+                                   th:field="*{surveySubscription}">
+                            <input type="hidden" name="surveySubscription" value="false">
+                            <label class="form-check-label" for="surveySubscription">Participate in
+                                Surveys</label>
+                        </div>
+                    </div>
+
+                    <!-- Consents -->
+                    <div class="mb-3">
+                        <label class="form-label">Consents</label>
+                        <div class="form-check">
+                            <input class="form-check-input custom-checkbox" type="checkbox" id="emailConsent"
+                                   th:field="*{emailConsent}">
+                            <input type="hidden" name="emailConsent" value="false">
+                            <label class="form-check-label" for="emailConsent">Consent for Email</label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input custom-checkbox" type="checkbox" id="smsConsent"
+                                   th:field="*{smsConsent}">
+                            <input type="hidden" name="smsConsent" value="false">
+                            <label class="form-check-label" for="smsConsent">Consent for SMS</label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input custom-checkbox" type="checkbox"
+                                   id="dataPrivacyConsent"
+                                   th:field="*{dataPrivacyConsent}">
+                            <input type="hidden" name="dataPrivacyConsent" value="false">
+                            <label class="form-check-label" for="dataPrivacyConsent">Receive Product Updates</label>
+                        </div>
+                    </div>
+
+                    <!-- CSRF Token -->
+                    <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+
+                    <!-- Form Footer -->
+                    <div class="form-footer mt-4">
+                        <button type="submit" class="btn btn-primary">Save Changes</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Sticky Footer -->
+<footer class="footer">
+    <span>© 2024 MyApp. All rights reserved.</span>
+</footer>
+
+<script type="text/javascript" th:src="@{/js/bootstrap.bundle.min.js}"
+        src="../static/js/bootstrap.bundle.min.js"></script>
+<script type="text/javascript" th:src="@{/js/main.js}" src="../static/js/main.js"></script>
+
+</body>
+</html>
