@@ -2,67 +2,69 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title>Dashboard</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home</title>
 
-    <!-- Bootstrap CSS -->
-    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
-    <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap" rel="stylesheet">
-
-    <!-- Custom CSS -->
-    <style>
-        body {
-            background-color: #f8f9fa;
-            font-family: 'Roboto', sans-serif;
-        }
-
-        .dashboard-container {
-            margin-top: 50px;
-            display: flex;
-            justify-content: center;
-        }
-
-        .dashboard-card {
-            width: 100%;
-            max-width: 500px;
-            padding: 40px;
-            background-color: #fff;
-            border-radius: 10px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-            text-align: center;
-        }
-
-        h2 {
-            margin-bottom: 30px;
-        }
-
-        .btn-logout,
-        .btn-edit-profile {
-            margin-top: 20px;
-            width: 100%;
-            text-align: center;
-        }
-
-        .btn-group-vertical .btn {
-            margin-bottom: 10px; /* Space between buttons */
-        }
-    </style>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/bootstrap.min.css}" href="../static/css/bootstrap.min.css"/>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/styles.css}" href="../static/css/styles.css"/>
 </head>
 <body>
 
-<div class="container dashboard-container">
-    <div class="dashboard-card">
-        <h2>Welcome back!</h2>
-        <p class="lead">You have successfully logged in to your account.</p>
+<!-- Navigation Header -->
+<nav class="navbar navbar-expand-lg">
+    <div class="container">
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
 
-        <!-- Edit Profile and Logout Buttons -->
-        <div class="btn-group-vertical">
-            <a href="/edit-profile" class="btn btn-primary btn-edit-profile">Edit Profile</a>
-            <a href="/logout" class="btn btn-danger btn-logout">Logout</a>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <div class="col-md-3 mb-2 mb-md-0">
+            </div>
+
+            <ul class="navbar-nav">
+                <li class="nav-item">
+                    <a class="nav-link active" th:href="@{/}">Home</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" th:href="@{/edit-profile}">Profile</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" th:href="@{/change-password}">Change Password</a>
+                </li>
+            </ul>
+
+            <div class="logout-container">
+                <a th:href="@{/logout}" class="btn btn-logout" type="button">Logout</a>
+            </div>
+        </div>
+    </div>
+</nav>
+
+<!-- Main Content -->
+<div class="main-content">
+    <div class="container home-container">
+        <h1>Welcome Back to Your Account!</h1>
+        <p>Easily manage your account settings and profile information. Use the buttons below to update your details or
+            change your password.</p>
+
+        <div class="mb-3">
+            <a th:href="@{/edit-profile}" class="btn btn-primary">Edit Profile</a>
+        </div>
+        <div>
+            <a th:href="@{/change-password}" class="btn btn-primary">Change Password</a>
         </div>
     </div>
 </div>
+
+<!-- Sticky Footer -->
+<footer class="footer">
+    <span>© 2024 MyApp. All rights reserved.</span>
+</footer>
+
+<script type="text/javascript" th:src="@{/js/bootstrap.bundle.min.js}"
+        src="../static/js/bootstrap.bundle.min.js"></script>
+<script type="text/javascript" th:src="@{/js/main.js}" src="../static/js/main.js"></script>
 
 </body>
 </html>

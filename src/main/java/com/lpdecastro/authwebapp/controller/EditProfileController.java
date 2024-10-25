@@ -19,8 +19,7 @@ public class EditProfileController {
     public String showEditProfilePage(Model model) {
         UserDto userDto = editProfileService.getCurrentUser();
         model.addAttribute("user", userDto);
-//        return "edit-profile-v2";
-        return "edit-profile-v3-using6";
+        return "edit-profile";
     }
 
     @PostMapping("/edit-profile")

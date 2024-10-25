@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Dashboard</title>
+
+    <!-- Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap" rel="stylesheet">
+
+    <!-- Custom CSS -->
+    <style>
+        body {
+            background-color: #f8f9fa;
+            font-family: 'Roboto', sans-serif;
+        }
+
+        .dashboard-container {
+            margin-top: 50px;
+            display: flex;
+            justify-content: center;
+        }
+
+        .dashboard-card {
+            width: 100%;
+            max-width: 500px;
+            padding: 40px;
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+
+        h2 {
+            margin-bottom: 30px;
+        }
+
+        .btn-logout,
+        .btn-edit-profile {
+            margin-top: 20px;
+            width: 100%;
+            text-align: center;
+        }
+
+        .btn-group-vertical .btn {
+            margin-bottom: 10px; /* Space between buttons */
+        }
+    </style>
+</head>
+<body>
+
+<div class="container dashboard-container">
+    <div class="dashboard-card">
+        <h2>Welcome back!</h2>
+        <p class="lead">You have successfully logged in to your account.</p>
+
+        <!-- Edit Profile and Logout Buttons -->
+        <div class="btn-group-vertical">
+            <a href="/edit-profile" class="btn btn-primary btn-edit-profile">Edit Profile</a>
+            <a href="/logout" class="btn btn-danger btn-logout">Logout</a>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>
